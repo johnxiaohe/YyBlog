@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>渊鱼后台登录</title>
+    <link href="/css/houtai/login.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script th:src="@{../layui/layui.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" src='../js/jquery.form.js' ></script>
+</head>
+
+<body>
+<div class="login_box">
+    <div class="login_l_img"><img src="../images/login-img.png"/></div>
+    <div class="login">
+        <div class="login_logo"><a href="#"><img src="../images/login_logo.png"/></a></div>
+        <div class="login_name">
+            <p>渊鱼博客-后台管理系统</p>
+        </div>
+        <form method="post" th:action="@{${#httpServletRequest.getContextPath()}+'/role/login'}">
+            <input name="account" id="account" type="text" value="账号" onfocus="this.value=''"
+                   onblur="if(this.value==''){this.value='账号'}">
+            <input name="password" type="password" id="password"
+                   onblur="if(this.value==''){document.getElementById('password_text').style.display='block';this.style.display='none'};"/>
+
+        </form>
+        <button class="layui-btn layui-btn-lg layui-btn-normal"  style="width:100%;" onclick="login();" type="submit">登录</button>
+    </div>
+    <div class="copyright"> by:&nbsp;iArchie--版权所有©2018</div>
+</div>
+<div style="text-align:center;">
+    <script type="text/javascript">
+        var curWwwPath=window.document.location.href;
+        var pathName=window.document.location.pathname;
+        var pos=curWwwPath.indexOf(pathName);
+        var projectNameall = curWwwPath.substring(0,pos);
+        function login(){
+            var account = $("#account").val();
+            var password = $("#password").val();
+            $.ajax({
+                url:projectNameall+'/role/login/json',
+                data:{'account':account,'password':password},
+                success:function(result){
+                    if(result.status=='error'){
+                        alert(result.message);
+                    }else{
+                        window.location.href=projectNameall+"/role/login";
+                    }
+                }
+            })
+        }
+    </script>
+</div>
+</body>
+</html>

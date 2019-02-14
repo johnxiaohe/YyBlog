@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="head :: commonHead('渊鱼的自我介绍')"></head>
+<body>
+
+<div th:include="header :: headerr"  ></div>
+
+<main id="main" style="margin-left: 30%;" >
+
+	<div class="container">
+
+		<div class="row topspace">
+			
+
+			<!-- Article main content -->
+            <article role="pge-title-content" class="main-content page-page" itemscope itemtype="http://schema.org/Article">
+                <div class="post-header">
+                    <h1 class="post-title" itemprop="name headline">Welcome to my heart</h1>
+                </div>
+                <div id="post-content" class="post-content">
+                    <header>
+                        <label> My name is YuanYu,All right it's just my nickname.</label>
+                    </header>
+                    <label>I’m a Java Developer with an enduring interest in Coding and Write Blog.</label>
+                    <br/>
+                    <br/>
+                    <h1>About Me</h1>
+                    <p style="margin-bottom: 10px;">
+                        我是渊鱼，一名生于九六年的焦作小伙汁。<br/>
+                        专注于各种能吸引我注意力的事情，目前是Java后端工程师。但是我想做的不局限于该职业<br/>
+                        尝试各种觉得有趣的事情：公众号、写故事、修图、做视频。<br/>
+                        不想放弃任何事，不想放弃提升自己。<br/>
+                        很喜欢电子产品<span style="color: #E6E6E6">(但大部分是没钱买的)</span>
+                    </p>
+                    <p>喜欢运动、看书、听歌、动漫</p>
+                    <br/>
+                    <br/>
+                    <h1>邮箱</h1>
+                    <ul>
+                        <li><a href="#">腾讯:</a> 1154910941@qq.com</li>
+                        <li><a href="#">网易:</a>john_xiaohe@163.com</li>
+                        <li><a href="#">谷歌:</a> johnxiaohe@gmail.com</li>
+                        <li><a href="#">联系电话:</a>17737419925</li>
+                        <li><a href="#">牛客:</a> 归墨</li>
+                    </ul>
+                    <br/>
+                    <br/>
+                    <h1>个人公众号</h1>
+                    <img src="/images/wechatPT.jpg">
+                </div>
+            </article>
+			<!-- /Article -->
+			
+
+		</div>
+	</div>	<!-- /container -->
+	
+</main>
+
+<div style="width: 100%;"  th:include="footer :: common"></div>
+
+
+
+<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
+</body>
+</html>

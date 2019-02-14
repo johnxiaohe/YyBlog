@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"    content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author"      content="Sergey Pozhilov (GetTemplate.com)">
+	
+	<title th:text="${returnObject.data.title}">渊鱼的博客信息</title>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/template.js}"></script>
+    <!--editor.md star -->
+    <link rel="stylesheet" th:href="@{/css/editormd.min.css}">
+    <script type="text/javascript" th:src="@{/js/jquery.form.js}" ></script>
+    <script type="text/javascript" src="/js/md/editormd.js" charset="utf-8" ></script>
+    <script type="text/javascript" src="/js/md/marked.min.js" ></script>
+    <script type="text/javascript" src="/js/md/prettify.min.js" ></script>
+    <script type="text/javascript" src="/js/md/raphael.min.js" ></script>
+    <script type="text/javascript" src="/js/md/underscore.min.js" ></script>
+    <script type="text/javascript" src="/js/md/flowchart.min.js" ></script>
+    <script type="text/javascript" src="/js/md/jquery.flowchart.min.js" ></script>
+    <script type="text/javascript" src="/js/md/sequence-diagram.min.js" ></script>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <!--editor.md end -->
+    <!-- Bootstrap -->
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.no-icons.min.css" rel="stylesheet">
+    <!-- Icons -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alice|Open+Sans:400,300,700">
+    <!-- Custom styles -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+	<!--[if lt IE 9]> <script src="assets/js/html5shiv.js"></script> <![endif]-->
+    <style>
+        a { color:red; transition:1s;text-decoration:none; }
+        a:hover { color:hotpink; }
+    </style>
+    <script type="text/javascript" >
+        $(document).ready(function(){
+            var testEditor;
+            $(function() {
+                testEditor = editormd.markdownToHTML("blogDiv", {//注意：这里是上面DIV的id
+                    htmlDecode : "style,script,iframe",
+                    emoji : true,
+                    taskList : true,
+                    tex : true, // 默认不解析
+                    flowChart : true, // 默认不解析
+                    sequenceDiagram : true, // 默认不解析
+                    codeFold : true
+                });
+            });
+
+            var curWwwPath=window.document.location.href;
+            var pathName=window.document.location.pathname;
+            var pos=curWwwPath.indexOf(pathName);
+            var projectNameall = curWwwPath.substring(0,pos);
+            $.ajax({
+                url:"http://192.168.49.1:8080/catgory/findCatgoryNum",
+                async:false,//true异步请求 false同步请求
+                success:function(data) {
+                    if(data == undefined){
+                        layer.msg("分类信息获取失败");
+                    }else{
+                        for(var i=0;i<data.length;i++){
+                            if(data[i].num==null||data[i].num==undefined){
+                                data[i].num = 0;
+                            }
+                            $('#catUl').append('<li><a href='+projectNameall+'/blog/findBlogByCategoryId?categoryId='+data[i].id+'>'+data[i].catName+':'+data[i].num+'</a></li> ');
+                        }
+                    }
+                },
+                error:function() {
+                    layer.msg("暂无信息");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div th:include="header :: headerr" ></div>
+
+<main id="main" >
+
+	<div class="container">
+		
+		<div  class="row topspace">
+			<div class="col-sm-12 col-sm-offset-0">
+															
+ 				<article class="post" >
+					<header class="entry-header">
+ 						<div class="entry-meta">
+ 							<span class="posted-on"><time class="entry-date published" th:text="${#dates.format(returnObject.data.createTime,'yyyy-MM-dd')}" >June 17, 2013</time></span>
+ 						</div> 
+ 						<h1 class="entry-title"><a style="text-decoration:none;" href="" rel="bookmark" th:text="${returnObject.data.title}" >Vivamus Lacus Mauris</a></h1>
+					</header> 
+					<div  id="blogDiv" class="entry-content">
+						<textarea  type="text" id="blogContent"   th:text="${returnObject.data.content}"></textarea>
+					</div>
+				</article><!-- #post-## -->
+
+			</div> 
+		</div> <!-- /row post  -->
+
+		<div class="row">
+			<div class="col-sm-8 col-sm-offset-2">
+
+				<div id="comments">	
+					<h3 class="comments-title">Comments space</h3>
+					<!--<a href="#comment-form" class="leave-comment">Leave a Comment</a>-->
+					<br><br>
+
+					<ol class="comments-list">
+						<li class="comment" th:each="comment :${returnObject.data.comment}">
+							<div>
+								<img th:src="${comment.header == null ?'http://47.100.58.201/img/girl.jpeg':comment.header}" alt="Avatar" class="avatar">
+								<div class="comment-meta">
+									<span class="author"><a href="#" style="text-decoration:none;" th:text="${comment.nickname==null?'伦家还没想好名字':comment.nickname}">John Doe</a></span>
+                                    <span class="date"><a href="#" style="text-decoration:none;" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd')}">January 22, 2011 at 4:55 pm</a></span>
+								</div>
+
+								<div class="comment-body" th:text="${comment.content}">
+                                    The comments were eaten.
+								</div>
+							</div>
+						</li>
+
+					</ol>
+					
+					<div class="clearfix"></div>
+
+					<nav id="comment-nav-below" class="comment-navigation clearfix" role="navigation">
+                        <div class="nav-content">
+							<div class="nav-previous">&larr; Older Comments</div>
+							<div class="nav-next">Newer Comments &rarr;</div>
+					    </div>
+                    </nav>
+
+
+					<div id="respond">
+						<h3 id="reply-title">Leave a Reply</h3>
+						<form action="" method="post" id="commentform" class="">
+							<div class="form-group">
+								<label for="inputComment">Comment</label>
+								<textarea class="form-control" id="inputComment" rows="6">这里使用ajax提交评论</textarea>
+							</div>
+							<div class="row">
+								<div class="col-md-12 text-right">
+  									<button type="submit" class="btn btn-action"  >Submit</button>
+								</div>
+                            </div>
+						</form>
+					</div> <!-- /respond -->
+				</div>
+			</div>
+		</div> <!-- /row comments -->
+		<div class="clearfix"></div>
+
+	</div>	<!-- /container -->
+
+</main>
+
+<div style="width: 100%; margin-top: 10px;"  th:include="footer :: common"></div>
+
+
+<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
+</body>
+</html>

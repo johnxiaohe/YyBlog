@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxy.blog.dao.DicCatgoryMapper">
+
+    <insert id="saveCatgory" parameterType="DicCatgory" keyProperty="id" useGeneratedKeys="true">
+
+        INSERT INTO dic_catgory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="catName!=null">
+                catName,
+            </if>
+            <if test="catDesc!=null">
+                catDesc,
+            </if>
+            <if test="catParentId!= null">
+                catParentId,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="catName!=null">
+                #{catName},
+            </if>
+            <if test="catDesc!=null">
+                #{catDesc},
+            </if>
+            <if test="catParentId!=null">
+                #{catParentId},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delCatgory" parameterType="java.lang.Long">
+        DELETE FROM dic_catgory WHERE id=#{id}
+    </delete>
+
+    <update id="updateCatgory" parameterType="DicCatgory" >
+        UPDATE dic_catgory set
+        <trim suffixOverrides=",">
+            <if test="catName!=null">
+                catName=#{catName},
+            </if>
+            <if test="catDesc!=null">
+                catDesc=#{catDesc},
+            </if>
+            <if test="catParentId!=null">
+                catParentId=#{catParentId},
+            </if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+    <select id="findCatgory" resultType="DicCatgory">
+      SELECT dic_catgory.* from dic_catgory
+    </select>
+
+    <select id="findCatgoryNum" resultType="DicCatgory">
+        select dic_catgory.* , sf.num from dic_catgory left join (select categoryId , COUNT(categoryId) num from h_blog GROUP BY categoryId) sf on dic_catgory.id = sf.categoryId
+    </select>
+
+</mapper>

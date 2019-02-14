@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>你说呢小个子</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/editormd.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}" ></script>
+    <script type="text/javascript" th:src="@{/js/jquery.form.js}" ></script>
+    <script type="text/javascript" src="/js/md/editormd.js" ></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".btn-blog-save").click(function(){
+                $("#formBlog")[0].reset();//清空表单缓存
+                $("#blog_title").val($("#art-head").val());
+                $("#blog_md").val(testEditor.getMarkdown());
+                $("#blog_html").val(testEditor.getHTML());
+                $("#formBlog").ajaxSubmit({
+                    success:function(da){
+                        $.scojs_message('博客发布成功', $.scojs_message.TYPE_OK);
+                        //location='http://192.168.49.1:8080/public/index.html';
+                    }
+                });
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin" th:include="admin/amHeader :: adHeader"></div>
+<form id="formBlog" action="http://192.168.49.1:8080/blog/save" method="post">
+    <input id="blog_title" name="title" value="" style="display: none;" />
+    <input id="blog_userId" name="userId" value="1" style="display: none;" />
+    <textarea id="blog_md" name="mdContent" value="" style="display: none;"></textarea>
+    <textarea id="blog_html" name="content" value="" style="display: none;"></textarea>
+</form>
+
+<div class = "row m-auto" style="margin-top: 50px;" >
+    <div class="col-md-offset-1 col-lg-offset-1col-xl-offset-1 col-md-10" >
+        <div class="m-auto"><!--page-header -->
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 col-sm-3">
+                        <input type="text" class="form-control" id="art-head" name="art-head" placeholder="请输入文章标题">
+                    </div>
+                    <div class="col-md-2 col-sm-1">
+                        <button class="btn btn-success btn-blog-save">发表博客</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=""><!--panel-body -->
+            <div class = "row topspace">
+                <div id="content-editormd">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+
+    var testEditor;
+    $(function(){
+
+        testEditor=editormd({
+            id : "content-editormd",
+            placeholder : "欢迎使用和笑远的博客",
+            width : "90%",
+            height:640,
+            syncScrolling: "single",
+            path:"../lib/",
+            saveHTMLToTextarea:true,//保存HTML到Textarea
+            emoji: true,
+            tex:true,//开启科学公式Tex语言支持默认关闭
+            flowChart:true,//开启流程图支持，默认关闭
+            //图片上传
+            imageUpload:true,
+            imageFormats: ["jpg","jpeg","gif","png","bmp","webp"],
+            imageUploadURL: "http://192.168.49.1:8080/upFile/uploadImg",//上传路径
+
+            // theme: "dark",//顶部的主题
+            // editorTheme:"base16-dark",//编辑区主题
+            // previewTheme: "dark"//显示的主题
+
+        });
+
+    });
+
+    function sub(){
+        var ss = testEditor.getHTML();
+        alert(ss);
+    }
+
+</script>
+</html>

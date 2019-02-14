@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>渊鱼友链</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css" media="all">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" >
+        var curWwwPath=window.document.location.href;
+            var pathName=window.document.location.pathname;
+            var pos=curWwwPath.indexOf(pathName);
+            var projectNameall = curWwwPath.substring(0,pos);
+            function modify(id) {
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.open({
+                    content: '确定删除该友情链接么'
+                    ,btn: ['确定', '取消'],
+                    shade: [0.5, '#393D49'],//弹出层遮罩
+                    btnAlign: 'c', //按钮居中
+                    closeBtn: 2,  //关闭按钮样式
+                    resize :false, //让弹出框不能被拉大
+                    anim: 6         //入场动画
+                    ,yes: function(index, layero){
+                        alert(id);
+                        // $.ajax({
+                        //     url:projectNameall+'/diclink//delLink/json',
+                        //     data:{"id":id},
+                        //
+                        // });
+                        layer.close(index);
+                    }
+                    ,btn2: function(index, layero){
+                        //按钮【按钮二】的回调
+                        return;
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    }
+                    ,cancel: function(){
+                        //右上角关闭回调
+                        return;
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    }
+
+                });
+            });
+        }
+
+        function delLink(id){
+            layui.use('layer', function(){
+                var layer = layui.layer;
+
+                // layer.msg('hello');
+
+                layer.open({
+                    content: '确定删除该友情链接么'
+                    ,btn: ['确定', '取消']
+                    ,shade: [0.5, '#393D49']//弹出层遮罩
+                    ,btnAlign: 'c' //按钮居中
+                    ,move: false //禁止移动
+                    ,closeBtn: 2,  //关闭按钮样式
+                    resize :false, //让弹出框不能被拉大
+                    anim: 6         //入场动画
+                    ,yes: function(index, layero){
+                        alert(id);
+                        $.ajax({
+                            url:projectNameall+'/diclink/delLink/json',
+                            data:{"id":id},
+                            success:function(result){
+                                if(result.status=='error'){
+                                    layer.msg(result.message);
+                                }else{
+                                    alert(result.message);
+                                    location.reload();
+                                }
+                            }
+                        });
+                        layer.close(index);
+                    }
+                    ,btn2: function(index, layero){
+                        //按钮【按钮二】的回调
+                        layer.close(index);
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    }
+                    ,cancel: function(){
+                        //右上角关闭回调
+                        return;
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    }
+
+                });
+            });
+        }
+
+    </script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div   th:include="admin/amHeader :: adHeader"></div>
+</div>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend style="text-align: center">友情链接</legend>
+</fieldset>
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <span>友情链接</span>
+                    <a th:href="${#httpServletRequest.getContextPath()}+'/diclink/modifyLink?'" class="layui-btn  layui-btn-radius  layui-btn-sm layui-layout-right" style="margin-top: 0.5%;margin-right: 0.5%;">添加友链</a>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table"  lay-skin="line">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col width="150">
+                            <col width="200">
+                            <col width="150">
+                            <col width="200">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>友链操作</th>
+                            <th>友链Logo</th>
+                            <th>友情链接</th>
+                            <th>友链名称</th>
+                            <th>友链描述</th>
+                            <th>添加时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="diclink: ${returnObject.data}">
+                            <td>
+                                <div class="layui-btn-container">
+                                    <a class="layui-btn layui-btn-radius layui-btn-normal"  th:href="${#httpServletRequest.getContextPath()}+'/diclink/modifyLink?id='+${diclink.id}">
+                                        修改
+                                    </a>
+                                    <button class="layui-btn layui-btn-radius layui-btn-danger" th:value="${diclink.id}" onclick="delLink(this.value);">
+                                        删除
+                                    </button>
+                                </div>
+
+                            </td>
+                            <td>
+                                <div id="layer-photos-demo" class="layer-photos-demo">
+                                    <img style="width: 100px;height: 100px; border-radius:50px" layer-src="" th:src="${diclink.logo}">
+                                </div>
+                            </td>
+                            <td>
+                                <a th:href="${diclink.friendLink}" th:text="${diclink.friendLink}"></a>
+                            </td>
+                            <td th:text="${diclink.friendName}">
+                                名字被吃掉辣
+                            </td>
+                            <td th:text="${diclink.linkDesc}">
+                                我很懒不想给你看描述
+                            </td>
+                            <td th:text="${#dates.format(diclink.createTime,'yyyy-MM-dd')}">
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" onclick="show()">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<div class="layui-footer" style="position:fixed;left:000px;right:0;bottom:0;height:44px;line-height:44px;padding:0 15px;background-color:#eee;">
+    <!-- 底部固定区域 -->
+    <span style="margin-left: 45%;">
+              © 2018 iArchie博客- 底部固定区域
+    </span>
+</div>
+<script type="text/javascript">
+    layui.use('layer', function() {
+        layer.photos({
+            photos: '.layer-photos-demo'
+            ,move: false //禁止移动
+            , anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+        });
+    });
+</script>
+
+<form class="layui-form layui-form-pane" style="display: none;" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">友链名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">友情链接</label>
+        <div class="layui-input-inline">
+            <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">友链描述</label>
+        <div class="layui-input-block">
+            <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+
+
+
+</body>
+
+</html>

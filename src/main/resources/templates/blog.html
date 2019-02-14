@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" style="height: 100%;">
+<head th:include="head :: commonHead('渊鱼的博客列表')"></head>
+<body style="height: 100%;">
+
+<div th:include="header :: headerr" ></div>
+
+<main id="main" style="margin-bottom: 0px;">
+
+	<div class="container">
+		<div class="row topspace">
+			<div  class="col-sm-8 col-sm-offset-2">
+
+				<article class="post" th:each="blog :${returnObject.data}">
+
+					<header class="entry-header">
+						<div class="entry-meta">
+							<span class="posted-on"><time class="entry-date published" th:text="${#dates.format(blog.createTime,'yyyy-MM-dd')}">September 27, 2013</time></span>
+						</div>
+						<h1 class="entry-title"><a href="single.html" th:href="@{/blog/findBlogAndComment(id=${blog.id})}" th:text="${blog.title}" rel="bookmark">Hello world!</a></h1>
+					</header>
+					<div class="entry-content">
+						<p th:text="${blog.descr}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, molestias, architecto, adipisci, numquam dolor iusto eos reprehenderit placeat quam debitis quas magni eveniet. Saepe, nam, iste consectetur quae necessitatibus dolores provident veritatis possimus rerum facilis quia dicta itaque sapiente iusto natus quidem magni quibusdam. Explicabo nesciunt vel rem obcaecati reprehenderit eveniet culpa repudiandae. Distinctio, quia, provident illum necessitatibus repellendus rem voluptates exercitationem numquam inventore itaque atque sint nihil eveniet consequuntur eius! Laborum, at sit animi quae quidem ex tempora facilis.</p>
+                        <a href="single.html" th:href="@{/blog/findBlogAndComment(id=${blog.id})}" class="more-link">Continue reading&#8230;</a>
+					</div>
+				</article>
+ 				
+			</div>
+		</div>
+        <form id="pageFrom" th:action="${#httpServletRequest.getContextPath()+'/blog/findBlogByCategoryId'}" method="post" >
+            <input type="hidden" id="pageSize" name="pageSize" th:value="${returnObject.pageBean.pageSize==null?10:returnObject.pageBean.pageSize}" />
+            <input type="hidden" id="pageIndex" name="pageIndex" th:value="${returnObject.pageBean.pageIndex==null?1:returnObject.pageBean.pageIndex}" />
+            <input type="hidden" id="pageCount" name="pageCount" th:value="${returnObject.pageBean.pageCount==null?1:returnObject.pageBean.pageCount}" />
+            <input type="hidden" id="categoryId" name="categoryId" th:value="${returnObject.queryBean.categoryId}" />
+        </form>
+		<center class="" >
+			<ul id="pageUl" style="margin-top: 233px;" class="pagination">
+				<!--<li><a th:href="@{/blog/findBlogByCategoryId}" >1</a></li>-->
+			</ul>
+
+		</center>
+	<script type="text/javascript" >
+        var pageIndex = $("#pageIndex").val();
+        var pageCount = $("#pageCount").val();
+        var m =5;
+        //$("#pageIndex").val() $("#pageCount").val()
+        if(pageCount<=5){
+            for(var i=1;i<=pageCount;i++){
+                if(i==pageIndex){
+                    $('#pageUl').append('<li><a onclick="toPage(this);" style="font-size: 30px;" >'+i+'</a></li> ');
+                }else{
+                    $('#pageUl').append('<li><a onclick="toPage(this);" >'+i+'</a></li> ');
+                }
+            }
+        }else{
+            for(var j=pageIndex-2;j<=pageIndex+2&&j<=pageCount;j++){
+                if(j <=0){
+                    continue;
+                }
+                if(j==pageIndex){
+                    $('#pageUl').append('<li><a onclick="toPage(this);" style="font-size: 30px;">'+j+'</a></li> ');
+                }else{
+                    $('#pageUl').append('<li><a onclick="toPage(this);" >'+j+'</a></li> ');
+                }
+            }
+        }
+        function toPage(target){
+            //将当前pageIndex赋值给form的pageIndex 提交该form
+            alert($(target).text());
+            $("#pageIndex").val($(target).text());
+            alert($("#pageIndex").val());
+            $("#pageFrom").submit();
+        }
+
+    </script>
+
+	</div>	<!-- /container -->
+
+</main>
+<div style="width: 100%; float: bottom; margin-bottom: 0px;"  th:include="footer :: common"></div>
+
+<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
+</body>
+</html>

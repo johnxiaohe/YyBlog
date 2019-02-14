@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxy.blog.dao.DicLinkMapper">
+
+    <insert id="saveLink" parameterType="DicLink" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO dic_link
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="logo!=null" >
+                logo,
+            </if>
+            <if test="friendLink!=null" >
+                friendLink,
+            </if>
+            <if test="friendName!=null" >
+                friendName,
+            </if>
+            <if test="linkDesc!=null" >
+                linkDesc,
+            </if>
+            <if test="createTime!=null" >
+                createTime,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="logo!=null">
+                #{logo},
+            </if>
+            <if test="friendLink!=null">
+                #{friendLink},
+            </if>
+            <if test="friendName!=null">
+                #{friendName},
+            </if>
+            <if test="linkDesc!=null">
+                #{linkDesc},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findLink" parameterType="java.lang.Long" resultType="DicLink" >
+        SELECT * FROM dic_link WHERE id=#{id}
+    </select>
+
+    <select id="findLinkAll"  resultType="DicLink" >
+        SELECT * FROM dic_link
+    </select>
+
+    <delete id="delLink" parameterType="java.lang.Long" >
+        DELETE FROM dic_link WHERE id=#{id}
+    </delete>
+
+    <update id="updateLink" parameterType="DicLink" >
+        UPDATE dic_link SET
+        <trim suffixOverrides=",">
+            <if test="logo!=null">
+                logo=#{logo},
+            </if>
+            <if test="friendLink!=null">
+                friendLink=#{friendLink},
+            </if>
+            <if test="friendName!=null">
+                friendName=#{friendName},
+            </if>
+            <if test="linkDesc!=null">
+                linkDesc=#{linkDesc},
+            </if>
+            <if test="createTime!=null">
+                createTime=#{createTime},
+            </if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+</mapper>

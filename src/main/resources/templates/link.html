@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" style="height: 100%;">
+<head th:include="head :: commonHead('渊鱼的朋友连接')"></head>
+<body style="height: 100%;">
+<div th:include="header :: headerr" ></div>
+
+<main id="main">
+    <div>
+        <hr style="width: 50%; height: 1px; background-color: #CC66FF;border:none;">
+        <h2 th:align="center">欢迎各位大佬互换友链，互相交流</h2>
+        <hr style="width: 50%; height: 1px; background-color: #CC66FF;border:none;">
+    </div>
+    <div class="container">
+        <div class="row topspace">
+            <div  class="col-sm-8 col-sm-offset-2">
+
+                <article class="post" th:each="linkd :${returnObject.data}">
+                    <header class="entry-header">
+                        <h1 class="entry-title"><a style="" href="single.html" th:href="${linkd.friendLink}" th:text="${linkd.friendName}" rel="bookmark">Hello world!</a></h1>
+                    </header>
+                    <div class="entry-content" >
+                        <img style="border-radius:360px" th:src="${linkd.logo}" />
+                    </div>
+                </article>
+            </div>
+        </div>
+
+    </div>	<!-- /container -->
+    <div th:align="center">
+        <ul style="list-style: none;">
+            <li>本站名称:渊鱼博客</li>
+            <li>交换友链发邮件至john_xiaohe@163.com</li>
+            <li>必须首先将本站放于您站点友链上</li>
+            <li>请确定贵站可以稳定运营 原创博客优先，技术类博客优先，设计、视觉类博客优先 经常过来访问和评论，眼熟的</li>
+        </ul>
+    </div>
+</main>
+
+<div style="width: 100%;"  th:include="footer :: common"></div>
+
+
+<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!–suppress ThymeleafVariablesResolveInspection –>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:fragment = "commonHead(title)">
+    <meta charset="utf-8">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author"      content="Sergey Pozhilov (GetTemplate.com)">
+
+    <title th:text="${title}">Title</title>
+
+    <link rel="shortcut icon" th:href="@{/images/gt_favicon.png}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/template.js}"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.no-icons.min.css" rel="stylesheet">
+    <!-- Icons -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alice|Open+Sans:400,300,700">
+    <!-- Custom styles -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+    <!--[if lt IE 9]> <script th:src="@{/js/html5shiv.js}"></script> <![endif]-->
+    <script type="text/javascript" th:inline="javascript" >
+        $(document).ready(function(){
+            var curWwwPath=window.document.location.href;
+            var pathName=window.document.location.pathname;
+            var pos=curWwwPath.indexOf(pathName);
+            var projectNameall = curWwwPath.substring(0,pos);
+            $.ajax({
+                url:projectNameall+"/catgory/findCatgoryNum",
+                async:false,//true异步请求 false同步请求
+                success:function(data) {
+                    if(data == undefined){
+                        layer.msg("分类信息获取失败");
+                    }else{
+                        for(var i=0;i<data.length;i++){
+                            if(data[i].num==null||data[i].num==undefined){
+                                data[i].num = 0;
+                            }
+                            $('#catUl').append('<li><a href='+projectNameall+'/blog/findBlogByCategoryId?categoryId='+data[i].id+'>'+data[i].catName+':'+data[i].num+'</a></li> ');
+
+                        }
+                    }
+                },
+                error:function() {
+                    layer.msg("暂无信息");
+                }
+            });
+        });
+    </script>
+</head>
+</html>

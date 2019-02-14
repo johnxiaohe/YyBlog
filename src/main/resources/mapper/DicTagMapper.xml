@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxy.blog.dao.DicTagMapper">
+        <insert id="saveTag" parameterType="DicTag" useGeneratedKeys="true" keyProperty="id">
+            INSERT INTO dic_tag
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="tagName!=null">
+                    tagName,
+                </if>
+                <if test="tagDesc!=null">
+                    tagDesc,
+                </if>
+            </trim>
+            VALUES
+            <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="tagName!=null">
+                    #{tagName},
+                </if>
+                <if test="tagDesc!=null">
+                    #{tagDesc},
+                </if>
+            </trim>
+        </insert>
+
+        <update id="updateTag" parameterType="DicTag" >
+            UPDATE dic_tag SET
+            <trim suffixOverrides="," >
+                <if test="tagName!=null" >
+                    tagName=#{tagName},
+                </if>
+                <if test="tagDesc!=null" >
+                    tagDesc=#{tagDesc},
+                </if>
+            </trim>
+            WHERE id=#{id}
+        </update>
+
+        <delete id="delTag" parameterType="java.lang.Long" >
+            DELETE FROM dic_tag WHERE id=#{id}
+        </delete>
+
+        <select id="findTagAll" resultType="DicTag">
+            SELECT * FROM dic_tag
+        </select>
+
+        <select id="findTagByTags" resultType="DicTag" >
+            SELECT * FROM dic_tag WHERE id in 
+            <foreach collection="array" index="0" item="tag" separator="," open="(" close=")">
+                #{tag}
+            </foreach>
+
+
+        </select>
+
+</mapper>

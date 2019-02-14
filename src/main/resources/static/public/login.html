@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎回来我的骑士</title>
+    <script type="text/javascript" src="../js/jquery.min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="../css/res/layui/css/layui.css">
+    <link id="layuicss-layer" rel="stylesheet" href="https://www.layui.com/admin/std/dist/layuiadmin/layui/css/modules/layer/default/layer.css?v=3.1.1" media="all">
+    <script type="text/javascript" src="../css/res/layui/layui.js"></script>
+    <script type="text/javascript" >
+        $(document).ready(function(){
+            alert(response.getParameter("message"));
+        } );
+        function submit(){
+            if($("#account").val()==undefined||$("#account").val()=="")
+            {
+                alert("请输入账号");
+                return 1;
+            }
+            if($("#password").val()==undefined||$("#password").val()=="")
+            {
+                $("#password").val("");
+                alert("请输入密码");
+                return 1;
+            }
+            $("#loginform").submit();
+        }
+    </script>
+    <style type="text/css" >
+        body,.allLogin::before{
+            font-family: Chiller;
+            background-image: url(/images/loginbj.jpg);
+            background-size: 100%;
+            font-size: 25px;
+
+        }
+        .innerLogin{
+            margin-left: 42%;
+            margin-top: 10%;
+            width: 300px;
+            height: 300px;
+        }
+        h1{
+          margin-top: 5%;
+          font-size: 80px;
+          font-family: Chiller;
+        }
+        input{
+            border-color:blue;
+        }
+        input:hover{
+            border-color:green;
+        }
+
+    </style>
+</head>
+
+<body>
+<!--<p  id="ppp" th:text="${param.message}" style="display: none"></p>-->
+    <div class="allLogin">
+        <div class="login_name" align="center">
+            <h1>Welcome back my knight!</h1>
+        </div>
+        <div class="innerLogin">
+            <div class="login" align="center">
+
+                <form method="post" action="/login" id="loginform">
+                    <div class="layui-form-item">
+                        <input type="text" name="account" id="account" lay-verify="required" placeholder="Please enter your account" style="width: 300px;border-color:blueviolet;" class="layui-input">
+                    </div>
+                    <div class="layui-form-item">
+                        <input type="password" name="password" id="password" lay-verify="required" style="width: 300px;border-color:blueviolet;" placeholder="Please enter your password" class="layui-input">
+                    </div>
+                </form>
+                <button onclick="submit();" class="layui-btn  layui-btn-normal"  style="width: 300px;font-size: 35px; ">Sign in</button>
+                <br><br><a href="/toregister"  style="font-size: 35px; float: right; color: #ffff77;">Lose It?</a>
+            </div>
+        </div>
+    </div>
+    <div align="center" style="margin-top: 5%;">
+        <h3 style="color: #ffffff">Pictures from : network</h3>
+        <h3 style="color: #ffffff">In case of infringement, delete immediately</h3>
+    </div>
+</body>
+</html>

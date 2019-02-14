@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎加入我,勇士</title>
+    <script type="text/javascript" src="../js/jquery.min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="../css/res/layui/css/layui.css">
+    <link id="layuicss-layer" rel="stylesheet" href="https://www.layui.com/admin/std/dist/layuiadmin/layui/css/modules/layer/default/layer.css?v=3.1.1" media="all">
+    <script type="text/javascript" src="../css/res/layui/layui.js"></script>
+    <script src="http://pv.sohu.com/cityjson"></script>
+    <script type="text/javascript" >
+        $(document).ready(function(){
+
+        });
+        function jiance(){
+            if($("#nickname").val()==undefined||$("#nickname").val()=="")
+            {
+                alert("请补全昵称");
+                return 1;
+            }
+            if($("#account").val()==undefined||$("#account").val()=="")
+            {
+                alert("请输入账号");
+                return 1;
+            }
+            if($("#password").val()==undefined||$("#password").val()=="")
+            {
+                $("#password").val("");
+                alert("请输入密码");
+                return 1;
+            }
+            if($("#header").val()==undefined||$("#header").val()=="")
+            {
+                $("#nickname").val("");
+                alert("请上传头像");
+                return 1;
+            }
+            if($("#password").val().length >16||$("#password").val().length <6){
+                $("#password").val("");
+                alert("密码在六到十六位之间");
+                return 1;
+            }
+            if($("#account").val().length >16||$("#account").val().length <6){
+                $("#account").val("");
+                alert("账号在六到十六位之间");
+                return 1;
+            }
+            if($("#nickname").val().length>8)
+            {
+                $("#nickname").val("");
+                alert("昵称过长不能超过八个字符");
+                return 1;
+            }
+
+        }
+        /*用户名验证*/
+        function checkUser(){
+            var user=$("#account").val();
+            var reg=/^[a-z][a-zA-Z0-9]{3,15}$/;
+            if(reg.test(user)==false){
+                alert("用户名仅支持数字和字母组合第一个字母小写");
+                return 1;
+            }
+            return 2;
+        }
+        /*密码验证*/
+        function checkPwd(){
+            var pwd=$("#password").val();
+            var reg=/^[a-zA-Z0-9]{3,16}$/;
+            if(reg.test(pwd)==false){
+                alert("密码仅支持字母加数字组合");
+                return 1;
+            }
+            return 2;
+        }
+        function submit(){
+            if(jiance() ==1){
+                return;
+            }
+            if(checkUser() ==1){
+                return;
+            }
+            if(checkPwd() ==1){
+                return;
+            }
+            $("#loginform").submit();
+        }
+        layui.use('upload', function(){
+            var upload = layui.upload;
+            //执行实例
+            upload.render({
+                elem: '#Upheader' //绑定元素
+                ,url: 'http://192.168.49.1:8080/upFile/uploadImg' //上传接口
+                ,data: {type:2} //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
+                ,done: function(res){
+                    $("#Upheader").css("background-image","url('http://47.100.58.201/img/guidao.jpg')");
+                    $("#header").val(res.url);
+                }
+                ,error: function(res){
+                }
+            });
+        });
+
+    </script>
+    <style type="text/css" >
+        body,.allLogin::before{
+            font-family: Chiller;
+            background-image: url("http://47.100.58.201/img/guidao.jpg");
+            background-size: 100%;
+            font-size: 25px;
+
+        }
+        .innerLogin{
+            margin-left: 42%;
+            margin-top: 5%;
+            width: 300px;
+            height: 300px;
+        }
+        h1{
+            margin-top: 5%;
+            font-size: 80px;
+            font-family: Chiller;
+            color: #ffffff;
+        }
+        input{
+            border-color:blue;
+        }
+        input:hover{
+            border-color:green;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="allLogin">
+    <div class="login_name" align="center">
+        <h1>Welcome to join me, Warrior!</h1>
+    </div>
+    <div class="innerLogin">
+        <div class="login" align="center">
+            <div id="Upheader" style="background-image: url('http://47.100.58.201/img/guidao.jpg');background-size: cover; cursor: pointer; width:100px;height:100px;border-radius:50px;border:solid rgb(100,100,100) 1px;">
+                <p style="margin-top: 30%; color:#ffffff">upload your header</p>
+            </div>
+            <br>
+            <form method="post" action="/register" id="loginform">
+                <div class="layui-form-item">
+                    <input type="text" name="nickname" id="nickname" lay-verify="required" placeholder="Please enter your nickname" style="width: 300px;border-color:blueviolet;" class="layui-input">
+                </div>
+                <div class="layui-form-item">
+                    <input type="text" name="header" id="header" lay-verify="required" style="width: 300px;border-color:blueviolet;display: none" class="layui-input" value="http://47.100.58.201/img/guidao.jpg">
+                </div>
+                <!--<div class="layui-form-item">-->
+                    <!--<input type="text" name="ipInfo" id="LAY-user-login-ipInfo" lay-verify="required" placeholder="Please enter your nickname" style="width: 300px;border-color:blueviolet; display: none" class="layui-input">-->
+                <!--</div>-->
+                <div class="layui-form-item">
+                    <input type="text" name="account" id="account" lay-verify="required" placeholder="Please enter your account" style="width: 300px;border-color:blueviolet;" class="layui-input">
+                </div>
+
+                <div class="layui-form-item">
+                    <input type="password" name="password" id="password" lay-verify="required" style="width: 300px;border-color:blueviolet;" placeholder="Please enter your password" class="layui-input">
+                    <div id="pwdId"></div>
+                </div>
+            </form>
+            <button onclick="submit();" class="layui-btn  layui-btn-normal"  style="width: 300px;font-size: 35px; ">register</button>
+        </div>
+
+    </div>
+
+</div>
+        <div align="center" style="margin-top: 10%;">
+            <h3 style="color: #ffffff">Pictures from : wlop</h3>
+            <h3 style="color: #ffffff">In case of infringement, delete immediately</h3>
+        </div>
+</body>
+</html>

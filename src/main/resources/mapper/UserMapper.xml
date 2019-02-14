@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxy.blog.dao.UserMapper">
+
+    <insert id="saveUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO h_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nickname!=null">
+                nickname,
+            </if>
+            <if test="account!=null">
+                account,
+            </if>
+            <if test="password!=null">
+                password,
+            </if>
+            <if test="loginTime!=null">
+                loginTime,
+            </if>
+            <if test="dark!=null">
+                dark,
+            </if>
+            <if test="darkTime!=null">
+                darkTime,
+            </if>
+            <if test="question!=null">
+                question,
+            </if>
+            <if test="header!=null">
+                header,
+            </if><if test="answer!=null">
+                answer,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nickname!=null">
+                #{nickname},
+            </if>
+            <if test="account!=null">
+                #{account},
+            </if>
+            <if test="password!=null">
+                #{password},
+            </if>
+            <if test="loginTime!=null">
+                #{loginTime},
+            </if>
+            <if test="dark!=null">
+                #{dark},
+            </if>
+            <if test="darkTime!=null">
+                #{darkTime},
+            </if>
+            <if test="question!=null">
+                #{question},
+            </if>
+            <if test="header!=null">
+                #{header},
+            </if>
+            <if test="answer!=null">
+                #{answer},
+            </if>
+        </trim>
+    </insert>
+
+
+    <select id="findUserAll" resultType="User">
+        SELECT * FROM h_user
+    </select>
+
+    <select id="userLogin" parameterType="User" resultType="User" >
+        SELECT * FROM h_user WHERE
+        <trim  suffixOverrides=" AND">
+            <if test="nickname!=null">
+                nickname=#{nickname} AND
+            </if>
+            <if test="account!=null">
+                account=#{account} AND
+            </if>
+            <if test="password!=null">
+                password=#{password} AND
+            </if>
+            <if test="dark!=null">
+                dark=#{dark} AND
+            </if>
+            <if test="darkTime!=null">
+                darkTime=#{darkTime} AND
+            </if>
+            <if test="header!=null">
+                header=#{header} AND
+            </if>
+            <if test="question!=null">
+                question=#{question} AND
+            </if>
+            <if test="answer!=null">
+                answer=#{answer} AND
+            </if>
+        </trim>
+
+    </select>
+
+    <select id="findUser" parameterType="java.lang.Long" resultType="User">
+        SELECT * FROM h_user WHERE id=#{id}
+
+    </select>
+
+    <update id="updateUser" parameterType="User" >
+        UPDATE h_user SET
+        <trim  suffixOverrides=",">
+            <if test="nickname!=null">
+                nickname=#{nickname},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="dark!=null">
+                dark=#{dark},
+            </if>
+            <if test="darkTime!=null">
+                darkTime=#{darkTime},
+            </if>
+            <if test="header!=null">
+                header=#{header},
+            </if>
+            <if test="question!=null">
+                question=#{question},
+            </if>
+            <if test="answer!=null">
+                answer=#{answer},
+            </if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+</mapper>

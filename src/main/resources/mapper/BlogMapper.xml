@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxy.blog.dao.BlogMapper">
+    <resultMap id="blogMap" type="Blog" >
+        <id property="id" column="id" jdbcType="BIGINT" javaType="Long"/>
+        <result property="userId" column="userId" jdbcType="BIGINT"  javaType="Long"/>
+        <result property="title" column="title" jdbcType="VARCHAR" javaType="String"/>
+        <result property="content" column="content" jdbcType="VARCHAR" javaType="String"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP" javaType="Date"/>
+        <result property="lookNum" column="lookNum" jdbcType="BIGINT" javaType="Long"/>
+        <result property="likeNum" column="likeNum" jdbcType="BIGINT" javaType="Long"/>
+        <result property="commentNum" column="commentNum" jdbcType="BIGINT" javaType="Long"/>
+        <result property="modifyTime" column="modifyTime" jdbcType="TIMESTAMP" javaType="Date"/>
+        <result property="tagIds" column="tagIds" jdbcType="VARCHAR" javaType="String"/>
+        <result property="categoryId" column="categoryId" jdbcType="BIGINT" javaType="Long"/>
+        <result property="blogHeader" column="blogHeader" jdbcType="VARCHAR" javaType="String"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR" javaType="String" />
+        <!--property是Blog实体类中属性名 ofType是集合中类型 column是集合类型的主键 select是查询方法 可以是mapper的也可以是其他mapper的要写好路径 -->
+        <!--<collection property="comment" ofType="Comment" select="" />-->
+        <collection property="comment" ofType="Comment" >
+            <!--这里面的column是查询出来结果集字段名字-->
+            <id column="c_id" property="id" />
+            <result column="c_userId" property="userId" />
+            <result column="c_content" property="content" />
+            <result column="c_parentId" property="parentId" />
+            <result column="c_createTime" property="createTime" />
+            <result column="c_nickname" property="nickname" />
+            <result column="c_header" property="header" />
+        </collection>
+    </resultMap>
+    <select id="findBlogAndComment" resultMap="blogMap" parameterType="java.lang.Long"  >
+
+             select hc.id c_id , hc.userId c_userId , hc.content c_content , hc.parentId c_parentId , hc.createTime c_createTime ,
+				 hu.nickname c_nickname , hu.header c_header ,
+				 hb.*,h_user.nickname
+                 from h_blog hb
+				 LEFT JOIN h_user on hb.userId=h_user.id
+				 LEFT JOIN h_comment hc on hc.blogId=hb.id
+                 LEFT JOIN h_user hu on hc.userId = hu.id
+				 where hb.id=#{id}
+    </select>
+
+
+    <insert id="saveBlog" parameterType="Blog" useGeneratedKeys="true" keyProperty="id"  >
+        INSERT INTO h_blog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                userId,
+            </if>
+            <if test="mdContent!=null">
+                mdContent,
+            </if>
+            <if test="content!=null">
+                content,
+            </if>
+            <if test="createTime!=null">
+                createTime,
+            </if>
+            <if test="categoryId!=null">
+                categoryId,
+            </if>
+            <if test="tagIds!=null">
+                tagIds,
+            </if>
+            <if test="title!=null">
+                title,
+            </if>
+            <if test="blogHeader!=null">
+                blogHeader,
+            </if>
+            <if test="descr!=null">
+                descr,
+            </if>
+
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId!=null">
+                #{userId},
+            </if>
+            <if test="mdContent!=null">
+                #{mdContent},
+            </if>
+            <if test="content!=null">
+                #{content},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+            <if test="categoryId!=null">
+                categoryId,
+            </if>
+            <if test="tagIds!=null">
+                #{tagIds},
+            </if>
+            <if test="title!=null">
+                #{title},
+            </if>
+            <if test="blogHeader!=null">
+                #{blogHeader},
+            </if>
+            <if test="descr!=null">
+                #{descr},
+            </if>
+
+        </trim>
+    </insert>
+
+    <update id="updateBlogById" parameterType="Blog"  >
+        UPDATE h_blog set
+        <trim  suffixOverrides="," >
+            <if test="title!=null">
+                title=#{title},
+            </if>
+            <if test="mdContent!=null">
+                mdContent=#{mdContent},
+            </if>
+            <if test="content!=null">
+                content=#{content},
+            </if>
+            <if test="lookNum!=null">
+                lookNum=#{lookNum},
+            </if>
+            <if test="likeNum!=null">
+                likeNum=#{likeNum},
+            </if>
+            <if test="commentNum!=null">
+                commentNum=#{commentNum},
+            </if>
+            <if test="modifyTime!=null">
+                modifyTime=#{modifyTime},
+            </if>
+            <if test="tagIds!=null">
+                tagIds=#{tagIds}
+            </if>
+            <if test="categoryId!=null">
+                categoryId=#{categoryId},
+            </if>
+            <if test="blogHeader!=null">
+                blogHeader=#{blogHeader},
+            </if>
+            <if test="descr!=null">
+                descr=#{descr},
+            </if>
+        </trim>
+            WHERE id=#{id}
+    </update>
+    
+    <select id="findBlogById" parameterType="java.lang.Long" resultType="Blog">
+        SELECT * FROM h_blog WHERE id=#{id} ORDER BY id DESC
+    </select>
+
+    <select id="findBlogByCategoryId" parameterType="Blog" resultType="Blog">
+        SELECT * FROM h_blog
+        <if test="categoryId!=null">
+          WHERE  categoryId=#{categoryId}
+        </if>
+        ORDER BY id DESC
+        <if test="pageBean!=null">
+            limit ${pageBean.pageNum},${pageBean.pageSize}
+        </if>
+    </select>
+
+    <select id="findBlogByTagId" parameterType="Blog" resultType="Blog">
+        SELECT * FROM h_blog WHERE FIND_IN_SET(#{tagIds},tagIds)
+         ORDER BY id DESC
+        <if test="pageBean!=null">
+            limit ${pageBean.pageNum},${pageBean.pageSize}
+        </if>
+    </select>
+
+    <select id="findBlogByTitle" parameterType="Blog" resultType="Blog">
+        SELECT * FROM h_blog WHERE title like %#{title}%
+         ORDER BY id DESC
+        <if test="pageBean!=null">
+            limit ${pageBean.pageNum},${pageBean.pageSize}
+        </if>
+    </select>
+
+    <select id="findBlogIndex" resultType="Blog">
+        SELECT * FROM h_blog ORDER BY id DESC limit 0,20
+    </select>
+
+</mapper>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!–suppress ThymeleafVariablesResolveInspection –>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="head :: commonHead('渊鱼的博客首页')"></head>
+
+<body class="home">
+
+<div th:include="header :: headerr" ></div>
+
+<main id="main">
+
+	<div class="container">
+		
+		<div class="row section topspace">
+			<div class="col-md-12">
+				<p class="lead text-center text-muted" >风帆，不挂在桅杆上，是一块无用的布；桅杆，不挂上风帆，是一根平常的柱；理想，不付诸行动是虚无缥缈的雾；行动，而没有理想，是徒走没有尽头的路。</p>
+			</div>
+		</div> <!-- / section -->
+		
+
+		<div class="row section recentworks topspace">
+			
+			<h2 class="section-title"><span>Recent Works</span></h2>
+			
+			<div class="thumbnails recentworks row">
+
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" th:each="blog : ${returnObject.data}">
+                    <a class="thumbnail" th:href="@{/blog/findBlogAndComment(id=${blog.id})}">
+						<span class="img">
+							<img th:src="${blog.blogHeader}" alt="">
+							<span class="cover"><span class="more">阅读博客>></span></span>
+						</span>
+                        <span class="title" th:text="${blog.title}">这篇博客标题丢了</span>
+                    </a>
+                </div>
+
+
+			</div>
+
+		</div> <!-- /section -->
+
+		<div class="row section topspace" align="center">
+			<div class="panel panel-cta" align="center">
+                <div class="panel-body" align="center">
+                    <div class="col-lg-8" style="margin-left: 20%;" align="center">
+                        <p>今生，我用足迹踏遍人生我能选择的每一个可能，但无论我作怎样的漂泊，我都如一只风筝，我的根在你的手里，你的爱在我的心里。 </p>
+                    </div>
+		        </div> <!-- /section -->
+
+
+	        </div>	<!-- /container -->
+        </div>
+    </div>
+</main>
+<div style="width: 100%;"  th:include="footer :: common"></div>
+
+<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
+
+</body>
+</html>

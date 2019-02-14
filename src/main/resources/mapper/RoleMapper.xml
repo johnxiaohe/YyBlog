@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxy.blog.dao.RoleMapper">
+
+    <insert id="saveRole" keyProperty="id" useGeneratedKeys="true" parameterType="Role">
+        INSERT INTO h_role (userId) values (#{userId})
+    </insert>
+
+    <select id="findUser" parameterType="User" resultType="User">
+        SELECT u.* FROM h_role r LEFT JOIN h_user u ON u.id=r.userId WHERE r.userId=#{id}
+    </select>
+
+    <select id="findRole" parameterType="java.lang.Long" resultType="Role">
+        SELECT * FROM h_role WHERE userId=#{userId}
+    </select>
+
+    <select id="findRoleUser" resultType="User" >
+        SELECT u.* FROM h_role r LEFT JOIN h_user u ON u.id=r.userId
+    </select>
+
+    <delete id="delRoleUser" parameterType="java.lang.Long" >
+        DELETE FROM  h_role  WHERE userId=#{userId}
+    </delete>
+
+</mapper>
