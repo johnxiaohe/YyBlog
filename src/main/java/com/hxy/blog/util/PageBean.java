@@ -7,14 +7,15 @@ public class PageBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final Integer DEFAULT_PAGE_SIZE = 10;
-    /** 页码,从1开始 */
+    /** 当前页码,从1开始 */
     private Integer pageIndex=1;
-    /** 每页多少行 */
+    /** 每页行数 */
     private Integer pageSize=10;
-    /** 数据总行数 */
+    /** 总记录行数 */
     private Integer totalCount = 0;
-    /** 总共可以分多少页 */
+    /** 总页数 */
     private Integer pageCount=1;
+
     private Integer pageNum =0;
     /**排序方式 desc asc*/
     private String sort;

@@ -46,7 +46,8 @@
     </select>
 
     <select id="findLinkAll"  resultType="DicLink" >
-        SELECT * FROM dic_link
+        SELECT * FROM dic_link ORDER BY id DESC
+
     </select>
 
     <delete id="delLink" parameterType="java.lang.Long" >

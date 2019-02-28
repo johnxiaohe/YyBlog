@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 
 @SpringBootApplication
-@EnableAutoConfiguration
+//@EnableAutoConfiguration
 @EnableTransactionManagement
 @Configuration("com.hxy.blog.config")
 @MapperScan("com.hxy.blog.dao")

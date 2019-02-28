@@ -3,6 +3,7 @@ package com.hxy.blog.controller;
 
 import com.hxy.blog.entity.DicLink;
 import com.hxy.blog.service.DicLinkService;
+import com.hxy.blog.util.PageBean;
 import com.hxy.blog.util.ReturnDatas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

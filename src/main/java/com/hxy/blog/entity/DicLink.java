@@ -1,5 +1,7 @@
 package com.hxy.blog.entity;
 
+import com.hxy.blog.util.PageBean;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,6 +13,7 @@ public class DicLink implements Serializable {
     private String friendName;
     private String linkDesc;
     private Date createTime;
+    private PageBean pageBean;
 
     public Long getId() {
         return id;
@@ -58,6 +61,14 @@ public class DicLink implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public PageBean getPageBean() {
+        return pageBean;
+    }
+
+    public void setPageBean(PageBean pageBean) {
+        this.pageBean = pageBean;
     }
 
     @Override
