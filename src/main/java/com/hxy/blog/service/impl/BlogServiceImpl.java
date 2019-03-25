@@ -53,4 +53,14 @@ public class BlogServiceImpl implements BlogService {
     public List<Blog> findBlogIndex() {
         return blogMapper.findBlogIndex();
     }
+
+    @Override
+    public List<Blog> findBlogHt() {
+        return blogMapper.findBlogHt();
+    }
+
+    @Override
+    public Integer delBlog(Integer id) {
+        return blogMapper.delBlog(id);
+    }
 }

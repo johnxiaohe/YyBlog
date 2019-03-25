@@ -26,4 +26,8 @@ public interface BlogMapper {
     Blog findBlogAndComment( Long id);
     //首页博客列表显示前二十个
     List<Blog> findBlogIndex();
+
+    List<Blog> findBlogHt();
+
+    Integer delBlog(@Param(value = "id")Integer id);
 }

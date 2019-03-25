@@ -18,8 +18,8 @@ public class DicCatgoryServiceImpl implements DicCatgoryService {
     }
 
     @Override
-    public Integer delCatgory(Long id) {
-        return dicCatgoryMapper.delCatgory(id);
+    public void delCatgory(Long id) {
+         dicCatgoryMapper.delCatgory(id);
     }
 
     @Override
@@ -35,5 +35,10 @@ public class DicCatgoryServiceImpl implements DicCatgoryService {
     @Override
     public List<DicCatgory> findCatgoryNum() {
         return dicCatgoryMapper.findCatgoryNum();
+    }
+
+    @Override
+    public DicCatgory findCategoryById(Integer id) {
+        return dicCatgoryMapper.findCategoryById(id);
     }
 }

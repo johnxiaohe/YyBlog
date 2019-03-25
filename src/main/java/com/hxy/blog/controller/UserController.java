@@ -1,9 +1,11 @@
 package com.hxy.blog.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.hxy.blog.entity.User;
 import com.hxy.blog.entity.UserIp;
 import com.hxy.blog.service.UserIpService;
 import com.hxy.blog.service.UserService;
+import com.hxy.blog.util.MD5Util;
 import com.hxy.blog.util.PageBean;
 import com.hxy.blog.util.ReturnDatas;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +35,17 @@ public class UserController {
     }
     //更新用户信息
     @RequestMapping("/updateUser")
-    public void updateUser(HttpServletRequest request , Model model , User user)throws Exception{
+    @ResponseBody
+    public Integer updateUser(HttpServletRequest request , Model model , User user)throws Exception{
+        if(user.getId()==null){
+            throw new Exception("用户Id不能为空");
+        }
+        if(!StringUtils.isEmpty(user.getPassword())){
+            String password = user.getPassword();
+            user.setPassword(MD5Util.md5(password));
+        }
         Integer isSucc = userServiceImpl.updateUser(user);
+        return isSucc;
     }
     @RequestMapping("/findUserAll/json")
     @ResponseBody

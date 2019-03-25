@@ -22,4 +22,8 @@ public interface BlogService {
 
     List<Blog> findBlogIndex();
 
+    List<Blog> findBlogHt();
+
+    Integer delBlog(Integer id);
+
 }

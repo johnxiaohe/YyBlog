@@ -1,5 +1,6 @@
 package com.hxy.blog.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.hxy.blog.entity.Blog;
 import com.hxy.blog.entity.User;
 import com.hxy.blog.service.BlogService;
@@ -35,24 +36,44 @@ public class BlogController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/addBlog")
+    @RequestMapping("/toWrite")
     public String save(HttpServletRequest request , Blog blog, Model model)throws Exception{
-        blog.setCreateTime(new Date());
-        blogServiceImpl.saveBlog(blog);
+        if(blog.getId()!=null){
+           Blog  data = blogServiceImpl.findBlogById(blog.getId());
+            if(data!=null){
+                model.addAttribute("blog",data);
+            }
+        }
         return "admin/writerblog";
     }
 
     /**
-     * 跳转到书写或者修改博客页面
+     * 新增保存博客
      * @param request
      * @param model
      * @return
      * @throws Exception
      */
-    @RequestMapping("/toWrite")
-    public String toWrite(HttpServletRequest request , Blog blog, Model model)throws Exception{
-        model.addAttribute("blog",blog);
-        return "blog/writerblog";
+    @RequestMapping("/saveBlog")
+    @ResponseBody
+    public ReturnDatas toWrite(HttpServletRequest request , Blog blog, Model model)throws Exception{
+        ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
+        returnObject.setMessage("添加成功!");
+
+        if(StringUtils.isEmpty(blog.getTitle())||blog.getCategoryId()==null||StringUtils.isEmpty(blog.getMdContent())||StringUtils.isEmpty(blog.getContent())||StringUtils.isEmpty(blog.getBlogHeader())){
+            return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
+        }
+        if(blog.getId()==null){
+            blog.setDescr(blog.getContent().substring(0,30));
+            blog.setCreateTime(new Date());
+            blogServiceImpl.saveBlog(blog);
+        }else{
+            blog.setModifyTime(new Date());
+            returnObject.setMessage("修改成功!");
+            blogServiceImpl.updateBlogById(blog);
+        }
+
+        return returnObject;
     }
 
 
@@ -117,6 +138,14 @@ public class BlogController {
         ReturnDatas returnObject = findBlogByCategoryId(request,pageBean,blog,model);
         model.addAttribute("returnObject",returnObject);
         return "blog";
+    }
+
+    @RequestMapping("/htBlogList")
+    public String htBlogList(HttpServletRequest request ,PageBean pageBean, Blog blog , Model model)throws Exception{
+        ReturnDatas returnObject=new ReturnDatas();
+        returnObject.setData(blogServiceImpl.findBlogHt());
+        model.addAttribute("returnObject",returnObject);
+        return "admin/blogsList";
     }
 
     /**
@@ -240,6 +269,15 @@ public class BlogController {
 
         returnObject.setData(data);
         return returnObject;
+    }
+
+    @RequestMapping("/delBlog/json")
+    @ResponseBody
+    public Integer delBlog(HttpServletRequest request , Blog blog)throws Exception{
+        if(blog.getId()==null){
+            throw new Exception("没有参数");
+        }
+        return blogServiceImpl.delBlog(Integer.valueOf(blog.getId().toString()));
     }
 
 

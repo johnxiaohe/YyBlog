@@ -9,8 +9,9 @@ public interface DicCatgoryService {
 
     Long saveCatgory(DicCatgory dicCatgory);
 
-    Integer delCatgory(Long id);
+    void delCatgory(Long id);
     Integer updateCatgory(DicCatgory dicCatgory);
     List<DicCatgory> findCatgory();
     List<DicCatgory> findCatgoryNum();
+    DicCatgory findCategoryById(Integer id);
 }

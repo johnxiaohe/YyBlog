@@ -38,6 +38,8 @@ public class Blog implements Serializable {
 
     private String nickname;
 
+    private String catName;
+
     private PageBean pageBean;
 
     private List<Comment> comment;
@@ -119,6 +121,14 @@ public class Blog implements Serializable {
         return lookNum;
     }
 
+    public String getCatName() {
+        return catName;
+    }
+
+    public void setCatName(String catName) {
+        this.catName = catName;
+    }
+
     public void setLookNum(Long lookNum) {
         this.lookNum = lookNum;
     }
@@ -181,7 +191,7 @@ public class Blog implements Serializable {
 
     @Override
     public String toString() {
-        return "博客表{" +
+        return "{" +
                 "博客ID=" + getId() +
                 ", 用户ID=" + getUserId() +
                 ", 博客标题='" + getTitle() + '\'' +

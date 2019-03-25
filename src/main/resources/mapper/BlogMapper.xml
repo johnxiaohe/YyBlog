@@ -151,9 +151,13 @@
     </select>
 
     <select id="findBlogByCategoryId" parameterType="Blog" resultType="Blog">
+
         SELECT * FROM h_blog
         <if test="categoryId!=null">
           WHERE  categoryId=#{categoryId}
+        </if>
+        <if test="title!=null">
+            WHERE  title like %#{categoryId}%
         </if>
         ORDER BY id DESC
         <if test="pageBean!=null">
@@ -178,7 +182,15 @@
     </select>
 
     <select id="findBlogIndex" resultType="Blog">
-        SELECT * FROM h_blog ORDER BY id DESC limit 0,20
+        SELECT * FROM h_blog ORDER BY id DESC limit 0,9
     </select>
+
+    <select id="findBlogHt" resultType="Blog">
+        select h_blog.* , dic_catgory.catName from h_blog LEFT JOIN dic_catgory on h_blog.categoryId = dic_catgory.id
+    </select>
+
+    <delete id="delBlog" parameterType="java.lang.Integer" >
+        delete from h_blog where id=#{id}
+    </delete>
 
 </mapper>

@@ -106,58 +106,58 @@
 			</div> 
 		</div> <!-- /row post  -->
 
-		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2">
+		<!--<div class="row">-->
+			<!--<div class="col-sm-8 col-sm-offset-2">-->
 
-				<div id="comments">	
-					<h3 class="comments-title">Comments space</h3>
-					<!--<a href="#comment-form" class="leave-comment">Leave a Comment</a>-->
-					<br><br>
+				<!--<div id="comments">	-->
+					<!--<h3 class="comments-title">Comments space</h3>-->
+					<!--&lt;!&ndash;<a href="#comment-form" class="leave-comment">Leave a Comment</a>&ndash;&gt;-->
+					<!--<br><br>-->
 
-					<ol class="comments-list">
-						<li class="comment" th:each="comment :${returnObject.data.comment}">
-							<div>
-								<img th:src="${comment.header == null ?'http://47.100.58.201/img/girl.jpeg':comment.header}" alt="Avatar" class="avatar">
-								<div class="comment-meta">
-									<span class="author"><a href="#" style="text-decoration:none;" th:text="${comment.nickname==null?'伦家还没想好名字':comment.nickname}">John Doe</a></span>
-                                    <span class="date"><a href="#" style="text-decoration:none;" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd')}">January 22, 2011 at 4:55 pm</a></span>
-								</div>
+					<!--<ol class="comments-list">-->
+						<!--<li class="comment" th:each="comment :${returnObject.data.comment}">-->
+							<!--<div>-->
+								<!--<img th:src="${comment.header == null ?'http://47.100.58.201/img/girl.jpeg':comment.header}" alt="Avatar" class="avatar">-->
+								<!--<div class="comment-meta">-->
+									<!--<span class="author"><a href="#" style="text-decoration:none;" th:text="${comment.nickname==null?'伦家还没想好名字':comment.nickname}">John Doe</a></span>-->
+                                    <!--<span class="date"><a href="#" style="text-decoration:none;" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd')}">January 22, 2011 at 4:55 pm</a></span>-->
+								<!--</div>-->
 
-								<div class="comment-body" th:text="${comment.content}">
-                                    The comments were eaten.
-								</div>
-							</div>
-						</li>
+								<!--<div class="comment-body" th:text="${comment.content}">-->
+                                    <!--The comments were eaten.-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</li>-->
 
-					</ol>
-					
-					<div class="clearfix"></div>
+					<!--</ol>-->
+					<!---->
+					<!--<div class="clearfix"></div>-->
 
-					<nav id="comment-nav-below" class="comment-navigation clearfix" role="navigation">
-                        <div class="nav-content">
-							<div class="nav-previous">&larr; Older Comments</div>
-							<div class="nav-next">Newer Comments &rarr;</div>
-					    </div>
-                    </nav>
+					<!--<nav id="comment-nav-below" class="comment-navigation clearfix" role="navigation">-->
+                        <!--<div class="nav-content">-->
+							<!--<div class="nav-previous">&larr; Older Comments</div>-->
+							<!--<div class="nav-next">Newer Comments &rarr;</div>-->
+					    <!--</div>-->
+                    <!--</nav>-->
 
 
-					<div id="respond">
-						<h3 id="reply-title">Leave a Reply</h3>
-						<form action="" method="post" id="commentform" class="">
-							<div class="form-group">
-								<label for="inputComment">Comment</label>
-								<textarea class="form-control" id="inputComment" rows="6">这里使用ajax提交评论</textarea>
-							</div>
-							<div class="row">
-								<div class="col-md-12 text-right">
-  									<button type="submit" class="btn btn-action"  >Submit</button>
-								</div>
-                            </div>
-						</form>
-					</div> <!-- /respond -->
-				</div>
-			</div>
-		</div> <!-- /row comments -->
+					<!--<div id="respond">-->
+						<!--<h3 id="reply-title">Leave a Reply</h3>-->
+						<!--<form action="" method="post" id="commentform" class="">-->
+							<!--<div class="form-group">-->
+								<!--<label for="inputComment">Comment</label>-->
+								<!--<textarea class="form-control" id="inputComment" rows="6">这里使用ajax提交评论</textarea>-->
+							<!--</div>-->
+							<!--<div class="row">-->
+								<!--<div class="col-md-12 text-right">-->
+  									<!--<button type="submit" class="btn btn-action"  >Submit</button>-->
+								<!--</div>-->
+                            <!--</div>-->
+						<!--</form>-->
+					<!--</div> &lt;!&ndash; /respond &ndash;&gt;-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div> &lt;!&ndash; /row comments &ndash;&gt;-->
 		<div class="clearfix"></div>
 
 	</div>	<!-- /container -->

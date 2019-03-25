@@ -21,6 +21,22 @@ public class PageBean implements Serializable {
     private String sort;
     /**排序字段*/
     private String order;
+    /**
+     * layui 的分页显示参数 成功标志
+     */
+    private Integer code = 0;
+    /**
+     * layui 的分页显示参数 每页的数量
+     */
+    private Integer limit=10;
+    /**
+     * layui 的 分页显示参数 当前页
+     */
+    private Integer page=1;
+    /**
+     * layui 的 分页显示参数 总数
+     */
+    private Integer count;
     /**第一页 */
     private Boolean firstPage=false;
     /**上一页 */
@@ -46,6 +62,38 @@ public class PageBean implements Serializable {
 
     public PageBean() {
 
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     public Integer getPageNum() {

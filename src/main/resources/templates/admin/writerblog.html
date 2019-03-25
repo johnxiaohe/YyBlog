@@ -13,34 +13,67 @@
     <link rel="stylesheet" th:href="@{/css/editormd.min.css}">
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <script type="text/javascript">
-        $(document).ready(function(){
-            $(".btn-blog-save").click(function(){
-                $("#formBlog")[0].reset();//清空表单缓存
-                $("#blog_title").val($("#art-head").val());
-                $("#blog_md").val(testEditor.getMarkdown());
-                $("#blog_html").val(testEditor.getHTML());
-                $("#formBlog").ajaxSubmit({
-                    success:function(da){
-                        $.scojs_message('博客发布成功', $.scojs_message.TYPE_OK);
-                        //location='http://192.168.49.1:8080/public/index.html';
-                    }
-                });
-            });
+        var userId ='<%= session.getAttribute("userId")%>';
+        var curWwwPath=window.document.location.href;
+        var pathName=window.document.location.pathname;
+        var pos=curWwwPath.indexOf(pathName);
+        var projectNameall = curWwwPath.substring(0,pos);
+        $(document).ready(function() {
+            var title = $("#blog_title").val();
+            var mdContent = $("#blog_md").val();
+            var content = $("#blog_html").val();
+            $("#art-head").val(title);
+            alert(mdContent);
+            alert(content);
+            $(".editormd-markdown-textarea").val(mdContent);
+
 
 
         });
+        function submitBlog(){
+                $("#formBlog")[0].reset();//清空表单缓存
+
+                //获取博客标题 之类的
+                $("#blog_title").val($("#art-head").val());
+                $("#blog_md").val(testEditor.getMarkdown());
+                $("#blog_html").val(testEditor.getHTML());
+                $.ajax({
+                    type: "POST",//方法类型
+                    url:projectNameall+"/blog/saveBlog",
+                    data:{"title":$("#art-head").val(),
+                        "mdContent":testEditor.getMarkdown(),
+                        "content":testEditor.getHTML(),
+                        "categoryId":5,
+                        "blogHeader":""
+                    },
+                    success:function(result){
+                        if(result.status=="success"){
+                        //    成功了就要跳转页面了
+                        }else{
+                            alert(result.message);
+                            return;
+                        }
+                    }
+
+
+                })
+
+        }
     </script>
 </head>
 <body >
-<div class="layui-layout layui-layout-admin">
+<div class="layui-layout layui-layout-admin" >
     <div th:include="admin/amHeader :: adHeader"></div>
 </div>
-<form id="formBlog" action="http://192.168.49.1:8080/blog/save" method="post">
-    <input id="blog_title" name="title" value="" style="display: none;" />
-    <input id="blog_userId" name="userId" value="1" style="display: none;" />
-    <textarea id="blog_md" name="mdContent" value="" style="display: none;"></textarea>
-    <textarea id="blog_html" name="content" value="" style="display: none;"></textarea>
-</form>
+<!--<form id="formBlog" action="" method="post">-->
+    <div th:if="${blog!=null}">
+        <input id="blog_title" name="title" th:value="${blog.title}" style="display: none;" />
+        <input id="blog_userId" name="userId" th:value="${#httpServletRequest.session.getAttribute('userId')}" style="display: none;" />
+        <input id="blog_catgoryId" name="catgoryId" th:value="${blog.categoryId}" style="display: none;" />
+        <input id="blog_md" name="mdContent" th:value="${blog.mdContent}" style="display: none;"></input>
+        <input id="blog_html" name="content" th:value="${blog.content}" style="display: none;"></input>
+    </div>
+<!--</form>-->
 
 <div class = "row m-auto" style="margin-top: 50px;" >
     <div class="col-md-offset-1 col-lg-offset-1col-xl-offset-1 col-md-10" >
@@ -51,7 +84,7 @@
                         <input type="text" class="form-control" id="art-head" name="art-head" placeholder="请输入文章标题">
                     </div>
                     <div class="col-md-2 col-sm-1">
-                        <button class="btn btn-success btn-blog-save">发表博客</button>
+                        <button class="layui-btn layui-btn-normal" onclick="submitBlog();">发表博客</button>
                     </div>
                 </div>
             </div>
@@ -59,6 +92,7 @@
         <div class=""><!--panel-body -->
             <div class = "row topspace">
                 <div id="content-editormd">
+                    <textarea class="editormd-markdown-textarea" name="test-editormd-markdown-doc"  style="display: none;"></textarea>
                 </div>
             </div>
         </div>
@@ -90,7 +124,7 @@
             //图片上传
             imageUpload:true,
             imageFormats: ["jpg","jpeg","gif","png","bmp","webp"],
-            imageUploadURL: "http://192.168.49.1:8080/upFile/uploadImg",//上传路径
+            imageUploadURL: projectNameall+"/upFile/uploadImg",//上传路径
 
             // theme: "dark",//顶部的主题
             // editorTheme:"base16-dark",//编辑区主题

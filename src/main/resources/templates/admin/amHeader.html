@@ -22,10 +22,10 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">博客管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a th:href="${#httpServletRequest.getContextPath()+'/blog/addBlog'}" target="iframe">新增博客</a></dd>
-                    <dd><a href="blogsList.html" target="iframe">博客列表</a></dd>
-                    <dd><a href="commentMang.html" target="iframe">评论管理</a></dd>
-                    <dd><a href="sortManager.html" target="iframe">分类管理</a></dd>
+                    <dd><a th:href="${#httpServletRequest.getContextPath()+'/blog/toWrite'}" target="iframe">新增博客</a></dd>
+                    <dd><a th:href="${#httpServletRequest.getContextPath()+'/blog/htBlogList'}" target="iframe">博客列表</a></dd>
+                    <!--<dd><a href="commentMang.html" target="iframe">评论管理</a></dd>-->
+                    <dd><a th:href="${#httpServletRequest.getContextPath()+'/catgory/htCatgoryList'}" target="iframe">分类管理</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">

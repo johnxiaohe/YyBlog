@@ -58,4 +58,8 @@
         select dic_catgory.* , sf.num from dic_catgory left join (select categoryId , COUNT(categoryId) num from h_blog GROUP BY categoryId) sf on dic_catgory.id = sf.categoryId
     </select>
 
+    <select id="findCategoryById" parameterType="java.lang.Integer" resultType="DicCatgory">
+        select * from dic_catgory where id=#{id}
+    </select>
+
 </mapper>

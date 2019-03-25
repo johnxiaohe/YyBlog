@@ -62,7 +62,7 @@ public class RoleController {
         user.setDark(0);
         User user1 = userService.userLogin(user);
         if(user1==null){
-            return new ReturnDatas(ReturnDatas.ERROR,"登录失败无此用户");
+            return new ReturnDatas(ReturnDatas.ERROR,"登录失败请检查用户名或密码");
         }
 
         Role role = roleServiceImpl.findRole(user1.getId());
