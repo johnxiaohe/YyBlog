@@ -5,13 +5,21 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="shortcut icon" th:href="@{/images/gt_favicon.png}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.no-icons.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alice|Open+Sans:400,300,700">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
 </head>
 <body>
     <div th:fragment="headerr">
         <header id="header">
             <div id="head" class="parallax" parallax-speed="2">
                 <h1 id="logo" class="text-center">
-                    <img class="img-circle" th:src="@{/images/gy.jpg}" alt="">
+                    <img class="img-circle img-responsive"  th:src="@{/images/gy.jpg}" alt="Responsive image">
                     <span class="title">一条想跳出深渊的鱼</span>
                     <span class="tagline">总想搞点事情<br>
 				<span href="">johnxiaohe@gmail.com</span></span>
@@ -19,34 +27,39 @@
             </div>
 
             <nav class="navbar navbar-default navbar-sticky">
-                <div class="container-fluid">
+                <div class="container-fluid" >
 
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                            <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
-                            <span class="icon-bar"></span> <span class="icon-bar"></span>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+                            <span class="sr-only"> </span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
                         </button>
+                        <a class="navbar-brand" href="#"></a>
                     </div>
 
-                    <div class="navbar-collapse collapse">
+                    <div class="navbar-collapse collapse" id="menu" >
 
                         <ul class="nav navbar-nav">
                             <li class="active"><a th:href="@{${#httpServletRequest.getContextPath()}+'/index'}">Home</a></li>
-                            <li><a th:href="@{${#httpServletRequest.getContextPath()}+'/about'}">About</a></li>
+                            <li  class="active"><a th:href="@{${#httpServletRequest.getContextPath()}+'/about'}">About</a></li>
                             <li class="dropdown">
-                                <a  href="#" class="dropdown-toggle" data-toggle="dropdown">Blog <b class="caret"></b></a>
+                                <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blog <span  class="caret"></span ></a>
                                 <ul id="catUl"  class="dropdown-menu">
                                     <li ><a th:href="@{${#httpServletRequest.getContextPath()}+'/blog/findBlogByCategoryId'}">All Blog</a></li>
                                 </ul>
                             </li>
-                            <li><a th:href="@{${#httpServletRequest.getContextPath()}+'/diclink/findLinkAll'}">Link</a></li>
+                            <li class="active"><a th:href="@{${#httpServletRequest.getContextPath()}+'/diclink/findLinkAll'}">Link</a></li>
                         </ul>
+
 
                     </div>
 
                     <!--/.nav-collapse -->
                 </div>
             </nav>
+
         </header>
 
     </div>
