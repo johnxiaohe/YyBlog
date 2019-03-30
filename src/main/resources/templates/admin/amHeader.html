@@ -39,9 +39,9 @@
                     <img th:src="${#httpServletRequest.session.getAttribute('userheader')}" class="layui-nav-img">
                     <span th:text="${#httpServletRequest.session.getAttribute('username')}">iArchie</span>
                 </a>
-                <dl class="layui-nav-child">
-                    <dd><a href="admin/html/adminUser.html" target="iframe">修改密码</a></dd>
-                </dl>
+                <!--<dl class="layui-nav-child">-->
+                    <!--<dd><a href="admin/html/adminUser.html" target="iframe">修改密码</a></dd>-->
+                <!--</dl>-->
             </li>
             <li class="layui-nav-item"><a th:href="@{${#httpServletRequest.getContextPath()}+'/admin/goout'}">退出</a></li>
         </ul>

@@ -12,6 +12,8 @@
     <script type="text/javascript" src='../js/jquery.form.js' ></script>
     <script type="text/javascript" >
         $(document).ready(function(){
+            var url = $("#logo").val();
+            $("#Upheader").css("background-image","url('"+url+"')");
             layui.use('upload', function(){
                 var upload = layui.upload;
                 //执行实例
@@ -20,8 +22,9 @@
                     ,url: projectNameall+'/upFile/uploadImg' //上传接口
                     ,data: {type:2} //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
                     ,done: function(res){
-                        $("#Upheader").css("background-image","url('http://47.100.58.201/img/guidao.jpg')");
-                        $("#logo").val(res.url);
+                        var uri = "http://47.100.58.201/img"+res.url;
+                        $("#Upheader").css("background-image","url('"+uri+"')");
+                        $("#logo").val("http://47.100.58.201/img"+res.url);
                     }
                     ,error: function(res){
                     }

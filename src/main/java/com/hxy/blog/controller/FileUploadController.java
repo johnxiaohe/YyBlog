@@ -89,28 +89,16 @@ public class FileUploadController {
 ////            }
             //file.transferTo(ffff);
             //获取根路径
-            String url = System.getProperty("user.dir");
-            //String rootPath = "c:"+File.separator+"workspace"+File.separator+"blog"+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"img"+File.separator+now.get(Calendar.YEAR);
-            String rootPath = url+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"img"+File.separator+now.get(Calendar.YEAR);
+            String rootPath = "/home/blog/img";
             //定义输出文件
             File filePath = new File(rootPath);
             if(!filePath.exists()){
                 filePath.mkdir();
             }
-            String nextPath = rootPath+File.separator+(now.get(Calendar.MONTH)+1);
-            File nextFile = new File(nextPath);
-            if(!nextFile.exists()){
-                nextFile.mkdir();
-            }
-            String endPath = nextPath+File.separator+now.get(Calendar.DAY_OF_MONTH);
-            File endFile = new File(endPath);
-            if(!endFile.exists()){
-                endFile.mkdir();
-            }
             //最终文件名路径
             Random random = new Random();
             String newFileName = random.nextInt(100)+fileName;
-            File lastFile = new File(endPath+File.separator+newFileName);
+            File lastFile = new File(filePath+"/"+newFileName);
             //定义文件输出流 将输出路径作为参数
            // FileOutputStream outfile = new FileOutputStream(lastFile);
             //构建文件缓冲区
@@ -119,11 +107,15 @@ public class FileUploadController {
 //            outfile.write(file.getInputStream().read(bytes));
 //            outfile.flush();
 //            outfile.close();
-            String newPath = endPath.split("resources")[1];
             file.transferTo(lastFile);
             res.put("success",1);
             res.put("message","上传成功");
-            res.put("url",newPath+File.separator+newFileName);
+            if(request.getParameter("type") == null){
+                res.put("url","http://47.100.58.201:80/img/"+newFileName);
+            }else{
+                res.put("url","/"+newFileName);
+            }
+//            http://47.100.58.201/img
         }catch (IOException e){
             LOGGER.error("上传图片异常", e);
             res.put("success", 0);

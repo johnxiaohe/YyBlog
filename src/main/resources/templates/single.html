@@ -12,6 +12,7 @@
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/template.js}"></script>
     <!--editor.md star -->
+    <link rel="shortcut icon" th:href="@{/images/gt_favicon.png}">
     <link rel="stylesheet" th:href="@{/css/editormd.min.css}">
     <script type="text/javascript" th:src="@{/js/jquery.form.js}" ></script>
     <script type="text/javascript" src="/js/md/editormd.js" charset="utf-8" ></script>
@@ -34,7 +35,11 @@
     <!-- Custom styles -->
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 
-	<!--[if lt IE 9]> <script src="assets/js/html5shiv.js"></script> <![endif]-->
+    <link rel="stylesheet" href="../layui/css/layui.css" media="all">
+    <script src="../../layui/layui.js"></script>
+
+
+    <!--[if lt IE 9]> <script src="assets/js/html5shiv.js"></script> <![endif]-->
     <style>
         a { color:red; transition:1s;text-decoration:none; }
         a:hover { color:hotpink; }
@@ -58,25 +63,29 @@
             var pathName=window.document.location.pathname;
             var pos=curWwwPath.indexOf(pathName);
             var projectNameall = curWwwPath.substring(0,pos);
-            $.ajax({
-                url:"http://192.168.49.1:8080/catgory/findCatgoryNum",
-                async:false,//true异步请求 false同步请求
-                success:function(data) {
-                    if(data == undefined){
-                        layer.msg("分类信息获取失败");
-                    }else{
-                        for(var i=0;i<data.length;i++){
-                            if(data[i].num==null||data[i].num==undefined){
-                                data[i].num = 0;
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                $.ajax({
+                    url:projectNameall+"/catgory/findCatgoryNum",
+                    async:true,//true异步请求 false同步请求
+                    success:function(data) {
+                        if(data == undefined){
+                            layer.msg("分类信息获取失败");
+                        }else{
+                            for(var i=0;i<data.length;i++){
+                                if(data[i].num==null||data[i].num==undefined){
+                                    data[i].num = 0;
+                                }
+                                $('#catUl').append('<li><a href='+projectNameall+'/blog/findBlogByCategoryId?categoryId='+data[i].id+'>'+data[i].catName+':'+data[i].num+'</a></li> ');
                             }
-                            $('#catUl').append('<li><a href='+projectNameall+'/blog/findBlogByCategoryId?categoryId='+data[i].id+'>'+data[i].catName+':'+data[i].num+'</a></li> ');
                         }
+                    },
+                    error:function() {
+                        layer.msg("暂无信息");
                     }
-                },
-                error:function() {
-                    layer.msg("暂无信息");
-                }
+                });
             });
+
         });
     </script>
 </head>
@@ -98,7 +107,7 @@
  						</div> 
  						<h1 class="entry-title"><a style="text-decoration:none;" href="" rel="bookmark" th:text="${returnObject.data.title}" >Vivamus Lacus Mauris</a></h1>
 					</header> 
-					<div  id="blogDiv" class="entry-content">
+					<div  id="blogDiv" class="entry-content" style="min-height: 160px;">
 						<textarea  type="text" id="blogContent"   th:text="${returnObject.data.content}"></textarea>
 					</div>
 				</article><!-- #post-## -->
@@ -106,58 +115,6 @@
 			</div> 
 		</div> <!-- /row post  -->
 
-		<!--<div class="row">-->
-			<!--<div class="col-sm-8 col-sm-offset-2">-->
-
-				<!--<div id="comments">	-->
-					<!--<h3 class="comments-title">Comments space</h3>-->
-					<!--&lt;!&ndash;<a href="#comment-form" class="leave-comment">Leave a Comment</a>&ndash;&gt;-->
-					<!--<br><br>-->
-
-					<!--<ol class="comments-list">-->
-						<!--<li class="comment" th:each="comment :${returnObject.data.comment}">-->
-							<!--<div>-->
-								<!--<img th:src="${comment.header == null ?'http://47.100.58.201/img/girl.jpeg':comment.header}" alt="Avatar" class="avatar">-->
-								<!--<div class="comment-meta">-->
-									<!--<span class="author"><a href="#" style="text-decoration:none;" th:text="${comment.nickname==null?'伦家还没想好名字':comment.nickname}">John Doe</a></span>-->
-                                    <!--<span class="date"><a href="#" style="text-decoration:none;" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd')}">January 22, 2011 at 4:55 pm</a></span>-->
-								<!--</div>-->
-
-								<!--<div class="comment-body" th:text="${comment.content}">-->
-                                    <!--The comments were eaten.-->
-								<!--</div>-->
-							<!--</div>-->
-						<!--</li>-->
-
-					<!--</ol>-->
-					<!---->
-					<!--<div class="clearfix"></div>-->
-
-					<!--<nav id="comment-nav-below" class="comment-navigation clearfix" role="navigation">-->
-                        <!--<div class="nav-content">-->
-							<!--<div class="nav-previous">&larr; Older Comments</div>-->
-							<!--<div class="nav-next">Newer Comments &rarr;</div>-->
-					    <!--</div>-->
-                    <!--</nav>-->
-
-
-					<!--<div id="respond">-->
-						<!--<h3 id="reply-title">Leave a Reply</h3>-->
-						<!--<form action="" method="post" id="commentform" class="">-->
-							<!--<div class="form-group">-->
-								<!--<label for="inputComment">Comment</label>-->
-								<!--<textarea class="form-control" id="inputComment" rows="6">这里使用ajax提交评论</textarea>-->
-							<!--</div>-->
-							<!--<div class="row">-->
-								<!--<div class="col-md-12 text-right">-->
-  									<!--<button type="submit" class="btn btn-action"  >Submit</button>-->
-								<!--</div>-->
-                            <!--</div>-->
-						<!--</form>-->
-					<!--</div> &lt;!&ndash; /respond &ndash;&gt;-->
-				<!--</div>-->
-			<!--</div>-->
-		<!--</div> &lt;!&ndash; /row comments &ndash;&gt;-->
 		<div class="clearfix"></div>
 
 	</div>	<!-- /container -->

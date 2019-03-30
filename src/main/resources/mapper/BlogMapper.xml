@@ -88,7 +88,7 @@
                 #{createTime},
             </if>
             <if test="categoryId!=null">
-                categoryId,
+                #{categoryId},
             </if>
             <if test="tagIds!=null">
                 #{tagIds},

@@ -28,10 +28,12 @@
  				
 			</div>
 		</div>
-        <form id="pageFrom" th:action="${#httpServletRequest.getContextPath()+'/blog/findLinkAll'}" method="post" >
+        <form id="pageFrom" th:action="${#httpServletRequest.getContextPath()+'/blog/findBlogByCategoryId'}" method="post" >
             <input type="hidden" id="pageSize" name="pageSize" th:value="${returnObject.pageBean.pageSize==null?5:returnObject.pageBean.pageSize}" />
             <input type="hidden" id="pageIndex" name="pageIndex" th:value="${returnObject.pageBean.pageIndex==null?1:returnObject.pageBean.pageIndex}" />
             <input type="hidden" id="pageCount" name="pageCount" th:value="${returnObject.pageBean.pageCount==null?1:returnObject.pageBean.pageCount}" />
+            <input type="hidden" id="categoryId" name="categoryId" th:value="${returnObject.queryBean.categoryId==null?null:returnObject.queryBean.categoryId}" />
+
         </form>
 		<center class="" >
 			<ul id="pageUl" style="margin-top: 233px;" class="pagination">
@@ -66,9 +68,9 @@
         }
         function toPage(target){
             //将当前pageIndex赋值给form的pageIndex 提交该form
-            alert($(target).text());
+            // alert($(target).text());
             $("#pageIndex").val($(target).text());
-            alert($("#pageIndex").val());
+            // alert($("#pageIndex").val());
             $("#pageFrom").submit();
         }
 

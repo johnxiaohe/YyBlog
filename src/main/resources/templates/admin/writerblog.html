@@ -22,17 +22,69 @@
             var title = $("#blog_title").val();
             var mdContent = $("#blog_md").val();
             var content = $("#blog_html").val();
+            var categoryId = $("#blog_catgoryId").val();
+            var header = $("#blog_header").val();
+            if(header.length>1){
+                $("#blogIcon").attr("src",header);
+            }
+            if(header.length<=1){
+                $("#blog_header").val("http://47.100.58.201/img/guidao.jpg");
+            }
             $("#art-head").val(title);
-            alert(mdContent);
-            alert(content);
+            // alert(mdContent);
+            // alert(content);
             $(".editormd-markdown-textarea").val(mdContent);
 
+            $.ajax({
+                url:projectNameall+"/catgory/findCatgoryNum",
+                async:false,//true异步请求 false同步请求
+                success:function(data) {
+                    if(data == undefined){
+                        layer.msg("分类信息获取失败");
+                    }else{
+                        for(var i=0;i<data.length;i++){
+                            if(data[i].num==null||data[i].num==undefined){
+                                data[i].num = 0;
+                            }
+                            if(categoryId!=null&&categoryId!=data[i].id){
+                                $('#blogCate').append("<option value='"+data[i].id+"'>"+data[i].catName+"</option>");
+                            }
+                            if(categoryId!=null&&categoryId==data[i].id){
+                                $('#blogCate').append("<option value='"+data[i].id+"' selected='selected'>"+data[i].catName+"</option>");
+                            }
+                        }
+                    }
+                },
+                error:function() {
+                    layer.msg("暂无信息");
+                }
+            });
 
+            layui.use('upload', function(){
+                var upload = layui.upload;
+                //执行实例
+                upload.render({
+                    elem: '#blogIcon' //绑定元素
+                    ,url: projectNameall+'/upFile/uploadImg' //上传接口
+                    ,data: {type:2} //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
+                    ,done: function(res){
+                        var uri = "http://47.100.58.201/img"+res.url;
+                        $("#blog_header").val(uri);
+                        $("#blogIcon").attr("src","http://47.100.58.201/img"+res.url);
+                    }
+                    ,error: function(res){
+                    }
+                });
+            });
 
         });
         function submitBlog(){
-                $("#formBlog")[0].reset();//清空表单缓存
-
+                // $("#formBlog")[0].reset();//清空表单缓存
+                var userId = $("#blog_userId").val();
+                if(userId==null||userId.length<1){
+                    alert("请先登录！！！");
+                    return;
+                }
                 //获取博客标题 之类的
                 $("#blog_title").val($("#art-head").val());
                 $("#blog_md").val(testEditor.getMarkdown());
@@ -43,22 +95,23 @@
                     data:{"title":$("#art-head").val(),
                         "mdContent":testEditor.getMarkdown(),
                         "content":testEditor.getHTML(),
-                        "categoryId":5,
-                        "blogHeader":""
+                        "categoryId":$("#blogCate").val(),
+                        "blogHeader":$("#blog_header").val(),
+                        "userId":$("#blog_userId").val(),
+                        "id":$("#blog_id").val()
                     },
                     success:function(result){
                         if(result.status=="success"){
-                        //    成功了就要跳转页面了
+                            //    成功了就要跳转页面了
+                            alert(result.message);
                         }else{
                             alert(result.message);
                             return;
                         }
                     }
-
-
                 })
-
         }
+
     </script>
 </head>
 <body >
@@ -67,11 +120,14 @@
 </div>
 <!--<form id="formBlog" action="" method="post">-->
     <div th:if="${blog!=null}">
+        <input id="blog_id" name="id" th:value="${blog.id}" style="display: none;" />
         <input id="blog_title" name="title" th:value="${blog.title}" style="display: none;" />
         <input id="blog_userId" name="userId" th:value="${#httpServletRequest.session.getAttribute('userId')}" style="display: none;" />
         <input id="blog_catgoryId" name="catgoryId" th:value="${blog.categoryId}" style="display: none;" />
         <input id="blog_md" name="mdContent" th:value="${blog.mdContent}" style="display: none;"></input>
         <input id="blog_html" name="content" th:value="${blog.content}" style="display: none;"></input>
+        <input id="blog_header" name="header" th:value="${blog.blogHeader}" style="display: none;">
+
     </div>
 <!--</form>-->
 
@@ -86,6 +142,8 @@
                     <div class="col-md-2 col-sm-1">
                         <button class="layui-btn layui-btn-normal" onclick="submitBlog();">发表博客</button>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -94,7 +152,22 @@
                 <div id="content-editormd">
                     <textarea class="editormd-markdown-textarea" name="test-editormd-markdown-doc"  style="display: none;"></textarea>
                 </div>
+
             </div>
+        </div>
+        <div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">博客分类</label>
+                    <select name="blogCate" id="blogCate" lay-verify="required">
+                        <option value="">---请选择---</option>
+                    </select>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">封面</label>
+                <div class="layui-input-block">
+                    <img class="layui-form-item" style="width: 300px;height: 200px;border:solid rgb(100,100,100) 1px;" id="blogIcon" src="http://47.100.58.201/img/guidao.jpg">
+                </div>
+            </div><br>
         </div>
     </div>
 </div>
@@ -124,7 +197,7 @@
             //图片上传
             imageUpload:true,
             imageFormats: ["jpg","jpeg","gif","png","bmp","webp"],
-            imageUploadURL: projectNameall+"/upFile/uploadImg",//上传路径
+            imageUploadURL: projectNameall+"/upFile/editorImg",//上传路径
 
             // theme: "dark",//顶部的主题
             // editorTheme:"base16-dark",//编辑区主题

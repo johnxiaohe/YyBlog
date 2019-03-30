@@ -60,11 +60,15 @@ public class BlogController {
         ReturnDatas returnObject = ReturnDatas.getSuccessReturnDatas();
         returnObject.setMessage("添加成功!");
 
-        if(StringUtils.isEmpty(blog.getTitle())||blog.getCategoryId()==null||StringUtils.isEmpty(blog.getMdContent())||StringUtils.isEmpty(blog.getContent())||StringUtils.isEmpty(blog.getBlogHeader())){
+        if(StringUtils.isEmpty(blog.getTitle())||blog.getCategoryId()==null||StringUtils.isEmpty(blog.getMdContent())||StringUtils.isEmpty(blog.getContent())){
             return new ReturnDatas(ReturnDatas.ERROR,"参数缺失");
         }
         if(blog.getId()==null){
-            blog.setDescr(blog.getContent().substring(0,30));
+            if(blog.getContent().length()>30){
+                blog.setDescr(blog.getContent().substring(0,30));
+            }else{
+                blog.setDescr(blog.getContent());
+            }
             blog.setCreateTime(new Date());
             blogServiceImpl.saveBlog(blog);
         }else{
